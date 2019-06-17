@@ -1,4 +1,4 @@
-package com.naresh.task;
+package com.naresh.scheduletask;
 
 import java.util.List;
 
