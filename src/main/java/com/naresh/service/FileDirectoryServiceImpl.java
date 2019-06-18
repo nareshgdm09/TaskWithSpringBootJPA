@@ -11,7 +11,6 @@ import java.util.Arrays;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
-import org.apache.commons.logging.Log;
 import org.springframework.stereotype.Component;
 
 import com.naresh.common.CommonUtil;
@@ -36,39 +35,32 @@ public class FileDirectoryServiceImpl implements FileDirectoryService {
 
 	@Override
 	public void moveCompletedFiles(List<Player> playerRecords) throws FileMoveException {
-		// make directories of they are not exist
-		String[] directories = { Constants.JSONCOMPLTEDPATH, Constants.XMLCOMPLETEDPATH };
-		makeDir(directories);
-
 		for (Player player : playerRecords) {
+			System.out.println("Moving file :"+player);
 			try {
-
+				
 				Path jsonSourcePath = Paths.get(Constants.JSONPATH + player.getId() + Constants.JSONEXT);
 				Path jsonDestinationPath = Paths.get(Constants.JSONCOMPLTEDPATH + player.getId() + Constants.JSONEXT);
 
 				Path xmlSourcePath = Paths.get(Constants.XMLPATH + player.getId() + Constants.XMLEXT);
 				Path xmlDestinationPath = Paths.get(Constants.XMLCOMPLETEDPATH + player.getId() + Constants.XMLEXT);
-
+				
 				Files.move(jsonSourcePath, jsonDestinationPath, StandardCopyOption.REPLACE_EXISTING);
 				Files.move(xmlSourcePath, xmlDestinationPath, StandardCopyOption.REPLACE_EXISTING);
 
 			} catch (Exception e) {
-				System.out.println("Error file moving Record :"+player.getId());
-				throw new FileMoveException("File Moving Exception "+player);
+				System.out.println(e.getMessage());
+				throw new FileMoveException("File Moving Exception");
 			}
 		}
 	}
 
 	@Override
 	public void moveErrorFiles(List<String> errorRecords) throws FileMoveException {
-		// make directories of they are not exist
-		String[] directories = { Constants.JSONERRORDIR, Constants.XMLERRORDIR };
-		makeDir(directories);
 
 		for (String errorRecord : errorRecords) {
 
 			try {
-
 				Path jsonSourcePath = Paths.get(Constants.JSONPATH + errorRecord + Constants.JSONEXT);
 				Path jsonDestinationPath = Paths.get(Constants.JSONERRORDIR + errorRecord + Constants.JSONEXT);
 
@@ -79,17 +71,8 @@ public class FileDirectoryServiceImpl implements FileDirectoryService {
 				Files.move(xmlSourcePath, xmlDestinationPath, StandardCopyOption.REPLACE_EXISTING);
 
 			} catch (Exception e) {
-				System.out.println("Error file moving Record :"+errorRecord);
-				throw new FileMoveException("File Moving Exception " +errorRecord);
-			}
-		}
-	}
-
-	public static void makeDir(String[] directories) {
-		for (String dir : directories) {
-			File file = new File(dir);
-			if (!file.exists()) {
-				file.mkdir();
+				System.out.println(e.getMessage());
+				throw new FileMoveException("File Moving Exception");
 			}
 		}
 	}
