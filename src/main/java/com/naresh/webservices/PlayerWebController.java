@@ -16,8 +16,8 @@ public class PlayerWebController {
 	@Autowired
 	PlayerWebService playerWebService;
 
-	@PostMapping(path = "/player1", produces = { MediaType.APPLICATION_JSON_VALUE })
-	public List<Player> playerRestservice1(@RequestBody Player player) {
+	@PostMapping(path = "/players", produces = { MediaType.APPLICATION_JSON_VALUE })
+	public List<Player> playerRestservice(@RequestBody Player player) {
 		return playerWebService.findPlayer(player);
 
 	}
