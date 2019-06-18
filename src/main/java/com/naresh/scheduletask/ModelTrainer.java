@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 import com.naresh.common.CommonUtil;
 import com.naresh.common.Constants;
 import com.naresh.entity.Player;
+import com.naresh.exception.FileMoveException;
 import com.naresh.service.FileDirectoryService;
 import com.naresh.service.PlayerDBService;
 
@@ -23,6 +24,7 @@ public class ModelTrainer {
 	@Autowired
 	PlayerDBService PlayerDBService;
 
+	@SuppressWarnings("unchecked")
 	@Scheduled(initialDelay = 1000, fixedRate = 3000)
 	public void modelTrainerscheduledMethod() {
 
@@ -32,9 +34,22 @@ public class ModelTrainer {
 		if (jsonFiles.size() > 0 && xmlFiles.size() > 0) {
 			CommonUtil.findCommonFiles(jsonFiles, xmlFiles);
 
-			PlayerDBService.savePlayers(jsonFiles, xmlFiles);
+			List<Object> validAndErrorRecords = PlayerDBService.savePlayers(jsonFiles, xmlFiles);
 
-			List<Player> players = PlayerDBService.FindAllPlayers();
+			List<Player> validRecords = (List<Player>) validAndErrorRecords.get(0);
+			List<String> ErrorRecords = (List<String>) validAndErrorRecords.get(1);
+			System.out.println("Records :" + validRecords);
+			System.out.println("Records1 :" + ErrorRecords);
+
+			try {
+				fileDirectoryService.moveCompletedFiles(validRecords);
+				fileDirectoryService.moveErrorFiles(ErrorRecords);
+			} catch (FileMoveException e) {
+
+				e.printStackTrace();
+			}
+
+			//List<Player> players1 = PlayerDBService.FindAllPlayers();
 		}
 	}
 

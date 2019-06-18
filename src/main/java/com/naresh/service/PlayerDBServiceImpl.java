@@ -1,7 +1,9 @@
 package com.naresh.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -21,7 +23,7 @@ public class PlayerDBServiceImpl implements PlayerDBService {
 	ExcelFileService excelFileService;
 
 	@Override
-	public boolean savePlayers(List<String> jsonList, List<String> xmlList) {
+	public List<Object> savePlayers(List<String> jsonList, List<String> xmlList) {
 
 		List<Player> players = new ArrayList<>();
 		List<String> ErrorRecords = new ArrayList<>();
@@ -31,31 +33,17 @@ public class PlayerDBServiceImpl implements PlayerDBService {
 				players.add(CommonUtil.FileToObject(jsonString));
 			} catch (ErrorFileException e1) {
 				ErrorRecords.add(jsonString);
-				e1.getMessage();
+
 			}
 		});
 
-		List<Player> ErrorPlayerrecords = new ArrayList<>();
-		System.out.println(ErrorRecords);
-
-		/*
-		 * for (Player player : players) { boolean idnull = player.getId() == 0; if
-		 * (idnull) ErrorPlayerrecords.add(player); }
-		 */
-
-		players.removeAll(ErrorPlayerrecords);
-
 		playerRepository.saveAll(players);
 
-		fileDirectoryService.moveCompletedFiles(players);
+		List<Object> records = new ArrayList<>();
+		records.add(players);
+		records.add(ErrorRecords);
 
-		try {
-			excelFileService.createExcelFile(players);
-		} catch (Exception e) {
-			System.out.println("Exception cahced");
-		}
-
-		return true;
+		return records;
 
 	}
 

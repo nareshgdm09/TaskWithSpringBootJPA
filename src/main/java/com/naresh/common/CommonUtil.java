@@ -41,11 +41,9 @@ public class CommonUtil {
 	public static Player FileToObject(String fileName) throws ErrorFileException {
 		Player player = new Player();
 		ObjectMapper mapper = new ObjectMapper();
-		File jsonFile = null;
-		File xmlFile = null;
 		try {
-			jsonFile = new File(Constants.JSONPATH + fileName + Constants.JSONEXT);
-			xmlFile = new File(Constants.XMLPATH + fileName + Constants.XMLEXT);
+			File jsonFile = new File(Constants.JSONPATH + fileName + Constants.JSONEXT);
+			File xmlFile = new File(Constants.XMLPATH + fileName + Constants.XMLEXT);
 			player = mapper.readValue(jsonFile, Player.class);
 			player.setId(Integer.valueOf(fileName));
 			player.setCreatedTime(new Date());

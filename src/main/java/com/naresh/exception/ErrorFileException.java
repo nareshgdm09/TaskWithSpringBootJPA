@@ -1,7 +1,10 @@
 package com.naresh.exception;
 
 public class ErrorFileException extends Exception {
-	public ErrorFileException(String s){
+
+	private static final long serialVersionUID = 1L;
+
+	public ErrorFileException(String s) {
 		super(s);
 	}
 }
