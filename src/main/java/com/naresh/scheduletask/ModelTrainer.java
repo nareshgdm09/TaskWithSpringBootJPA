@@ -38,8 +38,6 @@ public class ModelTrainer {
 
 			List<Player> validRecords = (List<Player>) validAndErrorRecords.get(0);
 			List<String> ErrorRecords = (List<String>) validAndErrorRecords.get(1);
-			System.out.println("Records :" + validRecords);
-			System.out.println("Records1 :" + ErrorRecords);
 
 			try {
 				fileDirectoryService.moveCompletedFiles(validRecords);
@@ -49,7 +47,6 @@ public class ModelTrainer {
 				e.printStackTrace();
 			}
 
-			//List<Player> players1 = PlayerDBService.FindAllPlayers();
 		}
 	}
 
