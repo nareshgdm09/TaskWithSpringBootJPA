@@ -40,8 +40,10 @@ public class ModelTrainer {
 			List<String> ErrorRecords = (List<String>) validAndErrorRecords.get(1);
 
 			try {
-				fileDirectoryService.moveCompletedFiles(validRecords);
-				fileDirectoryService.moveErrorFiles(ErrorRecords);
+				if (validRecords.size() > 0)
+					fileDirectoryService.moveCompletedFiles(validRecords);
+				if (ErrorRecords.size() > 0)
+					fileDirectoryService.moveErrorFiles(ErrorRecords);
 			} catch (FileMoveException e) {
 
 				e.printStackTrace();
