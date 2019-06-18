@@ -15,8 +15,6 @@ import com.naresh.service.PlayerDBService;
 
 @Component
 public class ModelTrainer {
-	// private static final Logger logger =
-	// LogManager.getLogger(ModelTrainer.class);
 
 	@Autowired
 	FileDirectoryService fileDirectoryService;
@@ -48,11 +46,6 @@ public class ModelTrainer {
 
 				e.printStackTrace();
 			}
-
 		}
-	}
-
-	public void test() {
-		System.out.println("printing from test methos");
 	}
 }
